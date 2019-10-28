@@ -2,7 +2,13 @@ package com.vehiculerental.reservations;
 
 import com.vehiculerental.reservations.DAO.ReservationDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
 @RestController
 public class ReservationController {
@@ -34,5 +40,11 @@ public class ReservationController {
     @PutMapping(value = "reservation")
     public void modifyReservation(@RequestBody Reservation reservation){
         reservationDao.save(reservation);
+    }
+
+    @GetMapping(value = "datesOfReservation")
+    public List<Reservation> getAllBetweenDates(@RequestParam("endDate")  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate, @RequestParam("startDate")  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate) {
+
+        return reservationDao.findAllByDateOfBeginningBeforeAndDateOfEndAfter(endDate, startDate);
     }
 }
