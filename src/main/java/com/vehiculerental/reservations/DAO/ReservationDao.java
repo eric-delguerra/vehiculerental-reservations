@@ -5,4 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ReservationDao extends JpaRepository<Reservation, Integer> {
     Reservation findById(int id);
+    Iterable<Reservation> findAllByCustomerId(int id);
 }
