@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface ReservationDao extends JpaRepository<Reservation, Integer> {
     Reservation findById(int id);
-    List<Reservation>  findAllByDateOfBeginningAfterAndDateOfEndBefore(Date start, Date end);
+    List <Reservation> findAllByDateOfBeginningBeforeAndDateOfEndAfter(Date end, Date start);
     Iterable<Reservation> findAllByCustomerId(int id);
 }

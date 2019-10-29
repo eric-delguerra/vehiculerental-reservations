@@ -2,6 +2,7 @@ package com.vehiculerental.reservations;
 
 import com.vehiculerental.reservations.DAO.ReservationDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -42,17 +43,17 @@ public class ReservationController {
         reservationDao.save(reservation);
     }
 
+    @GetMapping(value = "datesOfReservation")
+    public List<Reservation> getAllBetweenDates(@RequestParam("endDate")  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate, @RequestParam("startDate")  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate) {
 
-    @GetMapping(value = "/datesOfReservation")
-    public List<Reservation> getAllBetweenDates(@RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate, @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate) {
-        return reservationDao.findAllByDateOfBeginningAfterAndDateOfEndBefore(startDate, endDate);
-
-    }
+        return reservationDao.findAllByDateOfBeginningBeforeAndDateOfEndAfter(endDate, startDate);
+     }
 
     @GetMapping("/reservations/customer/{id}")
     public ResponseEntity<Iterable<Reservation>> getCustomerReservations(@PathVariable("id") int id) {
         Iterable<Reservation> reservations = reservationDao.findAllByCustomerId(id);
 
         return ResponseEntity.ok(reservations);
+
     }
 }
